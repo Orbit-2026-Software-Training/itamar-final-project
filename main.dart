@@ -1,15 +1,20 @@
-import 'package:http/http.dart' as http;
-import 'dart:io';
 import 'dart:convert';
+import 'dart:io';
 void main() async {
-  //step 1 set the utl
-  final url = Uri.parse('https://v2.jokeapi.dev/joke/Any?format=json&amount=10');
-  //step 2 get the jokes from the url
-  final response = await http.get(url);
-  //step 3 decode the JSON response
-  final jokes = jsonDecode(response.body);
-  //step 4 save the jokes to a file
-  File jokesFile = File('jokes.json'); 
-  //step 5 write the jokes to the file 
-  jokesFile.writeAsStringSync(jsonEncode(jokes));
+  List<double> temperatures = [];
+  String fliePath =
+      r"readings.json";
+      
+  final file = File(fliePath);
+  final jsonString = await file.readAsString();
+
+  List<dynamic> list = jsonDecode(jsonString);
+
+  // Loop through the list and add the temperature to the list that has the temperatures as a double 
+  for (var item in list) {
+    double temp = (item['temperature'] as num).toDouble();
+    temperatures.add(temp);
+  }
+  temperatures.sort();
+  print(temperatures);
 }
