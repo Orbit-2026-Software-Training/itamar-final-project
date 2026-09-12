@@ -2,15 +2,17 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:csv/csv.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 void main() async {
+  DateTime now = DateTime.now();
   File csvFile = File('log_report.csv');
   List<List<String>> dataToImportToCsv = [
-    ['what was done'],
+    ['time', 'stage', 'details'],
   ];
 
-  void recordNewTask(String taskDescription) {
-    dataToImportToCsv.add([taskDescription]);
+  void recordNewTask(String time, String stage, String details) {
+    dataToImportToCsv.add([time, stage, details]);
   }
 
   // Import the api for the jokes
@@ -23,13 +25,15 @@ void main() async {
 
   File jokesFile = File('jokes.json');
   jokesFile.writeAsStringSync(jsonEncode(jokes));
-  recordNewTask("importing the api");
+  String time24 = DateFormat('HH:mm').format(now);
+  recordNewTask(time24, 'Stage 1', 'importing the api');
 
   // Read the json decoded to a string and add it to a list
   String jokesAsString = await jokesFile.readAsString();
   List<String> jokesList = [];
   jokesList.add(jokesAsString);
-  recordNewTask("read the json and decoded it to a string and it to a list");
+  time24 = DateFormat('HH:mm').format(now);
+  recordNewTask(time24, 'Stage 2', 'read the json and decoded it to a string and it to a list');
 
   // Take only the jokes from the json and loop thru the list and check the length of the string of each joke and it to a list and sort it
   List<dynamic> jokelist = jsonDecode(jokesAsString)['jokes'];
@@ -39,8 +43,11 @@ void main() async {
     jokelength.add(joke);
     jokelength.sort();
   }
+  time24 = DateFormat('HH:mm').format(now);
   recordNewTask(
-    "take only the jokes from the json and and loop thru the list and check the length of the string of each joke and it to a list and sort it ",
+    time24,
+    'Stage 3',
+    'take only the jokes from the json and and loop thru the list and check the length of the string of each joke and it to a list and sort it',
   );
 
   // Print the first, last and avgrage length of the string
@@ -48,87 +55,101 @@ void main() async {
   print("jokelength.last: ${jokelength.last}");
   double jokeaverage = jokelength.reduce((a, b) => a + b) / jokelength.length;
   print("jokeaverage: $jokeaverage");
-  recordNewTask("print the first last and average length of the string");
+  time24 = DateFormat('HH:mm').format(now);
+  recordNewTask(time24, 'Stage 4', 'print the first last and average length of the string');
+
   // Read the temperatures JSON as a string
   List<double> temperatures = [];
   String filePath = r"readings.json";
   final file = File(filePath);
   final jsonString = await file.readAsString();
   List<dynamic> list = jsonDecode(jsonString);
-  recordNewTask("read the temperatures JSON as a string");
+  time24 = DateFormat('HH:mm').format(now);
+  recordNewTask(time24, 'Stage 5', 'read the temperatures JSON as a string');
 
   // Loop through the list and add the temperature to the list that has the temperatures as a double
   for (var item in list) {
     double temp = (item['temperature'] as num).toDouble();
     temperatures.add(temp);
   }
+  time24 = DateFormat('HH:mm').format(now);
   recordNewTask(
-    "Loop through the list and add the temperature to the list that has the temperatures as a double",
+    time24,
+    'Stage 6',
+    'Loop through the list and add the temperature to the list that has the temperatures as a double',
   );
 
   // Find the avgrage temparuture and set variables for the error precentage function for temperatures
-  double Temp_average =
+  double TempAverage =
       temperatures.reduce((a, b) => a + b) / temperatures.length;
-  double error_percentage_resault_max_temp = 0;
-  double error_percentage_resault_min_temp = 0;
+  double errorPercentageResaultMaxTemp = 0;
+  double errorPercentageResaultMinTemp = 0;
+  time24 = DateFormat('HH:mm').format(now);
   recordNewTask(
-    "find the avgrage temparuture and set variables for the error precentage function",
+    time24,
+    'Stage 7',
+    'find the avgrage temparuture($TempAverage) and set variables for the error precentage function',
   );
 
   // Finding the error precentage functions for temperatures
   void error_percentage_temp() {
-    error_percentage_resault_min_temp =
-        ((temperatures.first - Temp_average).abs() / Temp_average) * 100;
-    error_percentage_resault_max_temp =
-        (temperatures.last - Temp_average).abs() / Temp_average * 100;
+    errorPercentageResaultMinTemp =
+        ((temperatures.first - TempAverage).abs() / TempAverage) * 100;
+    errorPercentageResaultMaxTemp =
+        (temperatures.last - TempAverage).abs() / TempAverage * 100;
     print(
-      "the min error precentage of temps is $error_percentage_resault_min_temp",
+      "the min error precentage of temps is $errorPercentageResaultMinTemp",
     );
     print(
-      "the max error precentage of temps is $error_percentage_resault_max_temp",
+      "the max error precentage of temps is $errorPercentageResaultMaxTemp",
     );
   }
 
-  recordNewTask("finding the error precentage functions for temperatures");
+  time24 = DateFormat('HH:mm').format(now);
+  recordNewTask(time24, 'Stage 8', 'finding the error precentage functions for temperatures');
 
   // Seting variables for the joke error precentage
-  double error_percentage_resaultMinJoke = 0;
-  double error_percentage_resault_max_joke = 0;
-  recordNewTask("seting variables");
+  double errorPercentageResaultMinJoke = 0;
+  double errorPercentageResaultMaxJoke = 0;
+  time24 = DateFormat('HH:mm').format(now);
+  recordNewTask(time24, 'Stage 9', 'seting variables');
 
   // Error precentage function this time for jokes
   void error_percentage_joke() {
-    error_percentage_resaultMinJoke =
+    errorPercentageResaultMinJoke =
         (jokelength.first - jokeaverage).abs() / jokeaverage * 100;
-    error_percentage_resault_max_joke =
+    errorPercentageResaultMaxJoke =
         (jokelength.last - jokeaverage).abs() / jokeaverage * 100;
     print(
-      "the max error precentage of jokes is $error_percentage_resault_max_joke%",
+      "the max error precentage of jokes is $errorPercentageResaultMaxJoke%",
     );
     print(
-      "the min error precenttage of jokes is $error_percentage_resaultMinJoke%",
+      "the min error precenttage of jokes is $errorPercentageResaultMinJoke%",
     );
   }
 
-  recordNewTask("error precentage function this time for jokes");
+  time24 = DateFormat('HH:mm').format(now);
+  recordNewTask(time24, 'Stage 10', 'error precentage function this time for jokes');
 
   // Calling the functions
   error_percentage_joke();
   error_percentage_temp();
-  recordNewTask("calling the functions");
+  time24 = DateFormat('HH:mm').format(now);
+  recordNewTask(time24, 'Stage 11', 'calling the functions');
 
   // Check which value out of both functions was the highest
-  double highest_value = error_percentage_resaultMinJoke;
-  if (error_percentage_resault_max_temp > highest_value) {
-    highest_value = error_percentage_resault_max_joke;
+  double highest_value = errorPercentageResaultMinJoke;
+  if (errorPercentageResaultMaxTemp > highest_value) {
+    highest_value = errorPercentageResaultMaxJoke;
   }
-  if (error_percentage_resaultMinJoke > highest_value) {
-    highest_value = error_percentage_resaultMinJoke;
+  if (errorPercentageResaultMinJoke > highest_value) {
+    highest_value = errorPercentageResaultMinJoke;
   }
-  if (error_percentage_resault_max_joke > highest_value) {
-    highest_value = error_percentage_resault_max_joke;
+  if (errorPercentageResaultMaxJoke > highest_value) {
+    highest_value = errorPercentageResaultMaxJoke;
   }
-  recordNewTask("check which value out of both functions was the highest");
+  time24 = DateFormat('HH:mm').format(now);
+  recordNewTask(time24, 'Stage 12', 'check which value out of both functions was the highest');
 
   // Sorting both lists
   for (int i = 0; i < temperatures.length - 1; i++) {
@@ -142,14 +163,16 @@ void main() async {
   }
 
   jokelength.sort();
-  recordNewTask("sorting both lists");
+  time24 = DateFormat('HH:mm').format(now);
+  recordNewTask(time24, 'Stage 13', 'sorting both lists');
 
   // Printing resualts from the functions
   print("temperatures.last: ${temperatures.last}");
   print("temperatures.first: ${temperatures.first}");
-  print("average.temperature: $Temp_average");
+  print("average.temperature: $TempAverage");
   print("the highest precentage is $highest_value");
-  recordNewTask("printing resualts from the functions");
+  time24 = DateFormat('HH:mm').format(now);
+  recordNewTask(time24, 'Stage 14', 'printing resualts from the functions');
 
   // Convert the recorded tasks list to a CSV string and save it to the CSV file
   String csvData = const ListToCsvConverter().convert(dataToImportToCsv);

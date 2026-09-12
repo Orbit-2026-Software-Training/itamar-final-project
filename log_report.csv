@@ -1,15 +1,15 @@
-what was done
-importing the api
-read the json and decoded it to a string and it to a list
-take only the jokes from the json and and loop thru the list and check the length of the string of each joke and it to a list and sort it 
-print the first last and average length of the string
-read the temperatures JSON as a string
-Loop through the list and add the temperature to the list that has the temperatures as a double
-find the avgrage temparuture and set variables for the error precentage function
-finding the error precentage functions for temperatures
-seting variables
-error precentage function this time for jokes
-calling the functions
-check which value out of both functions was the highest
-sorting both lists
-printing resualts from the functions
+time,stage,details
+15:35,Stage 1,importing the api
+15:35,Stage 2,read the json and decoded it to a string and it to a list
+15:35,Stage 3,take only the jokes from the json and and loop thru the list and check the length of the string of each joke and it to a list and sort it
+15:35,Stage 4,print the first last and average length of the string
+15:35,Stage 5,read the temperatures JSON as a string
+15:35,Stage 6,Loop through the list and add the temperature to the list that has the temperatures as a double
+15:35,Stage 7,find the avgrage temparuture(25.6161125) and set variables for the error precentage function
+15:35,Stage 8,finding the error precentage functions for temperatures
+15:35,Stage 9,seting variables
+15:35,Stage 10,error precentage function this time for jokes
+15:35,Stage 11,calling the functions
+15:35,Stage 12,check which value out of both functions was the highest
+15:35,Stage 13,sorting both lists
+15:35,Stage 14,printing resualts from the functions
