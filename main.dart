@@ -49,16 +49,7 @@ void main() async {
     'Stage 3',
     'take only the jokes from the json and and loop thru the list and check the length of the string of each joke and it to a list and sort it',
   );
-
-  // Print the first, last and avgrage length of the string
-  print("jokelength.first: ${jokelength.first}");
-  print("jokelength.last: ${jokelength.last}");
-  double jokeaverage = jokelength.reduce((a, b) => a + b) / jokelength.length;
-  print("jokeaverage: $jokeaverage");
-  time24 = DateFormat('HH:mm').format(now);
-  recordNewTask(time24, 'Stage 4', 'print the first last and average length of the string');
-
-  // Read the temperatures JSON as a string
+   // Read the temperatures JSON as a string
   List<double> temperatures = [];
   String filePath = r"readings.json";
   final file = File(filePath);
@@ -67,6 +58,27 @@ void main() async {
   time24 = DateFormat('HH:mm').format(now);
   recordNewTask(time24, 'Stage 5', 'read the temperatures JSON as a string');
 
+// Sorting both lists
+  for (int i = 0; i < temperatures.length - 1; i++) {
+    for (int j = 0; j < temperatures.length - i - 1; j++) {
+      if (temperatures[j] > temperatures[j + 1]) {
+        double currentTempForListSorting = temperatures[j];
+        temperatures[j] = temperatures[j + 1];
+        temperatures[j + 1] = currentTempForListSorting;
+      }
+    }
+  }
+
+  jokelength.sort();
+  // Print the first, last and avgrage length of the string
+  print("jokelength.first: ${jokelength.first}");
+  print("jokelength.last: ${jokelength.last}");
+  double jokeaverage = jokelength.reduce((a, b) => a + b) / jokelength.length;
+  print("jokeaverage: $jokeaverage");
+  time24 = DateFormat('HH:mm').format(now);
+  recordNewTask(time24, 'Stage 4', 'print the first last and average length of the string');
+
+ 
   // Loop through the list and add the temperature to the list that has the temperatures as a double
   for (var item in list) {
     double temp = (item['temperature'] as num).toDouble();
